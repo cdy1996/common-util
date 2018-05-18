@@ -19,10 +19,5 @@ public class CollectionUtil {
         return CollectionUtils.isNotEmpty(collection);
     }
     
-    @SafeVarargs
-    public static <T> List<T> of(T... t){
-        return new ArrayList<T>(Arrays.asList(t));
-    }
-    
-    
+  
 }
