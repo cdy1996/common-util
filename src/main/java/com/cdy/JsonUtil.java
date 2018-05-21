@@ -5,7 +5,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * todo
@@ -40,12 +41,12 @@ public class JsonUtil {
     }
     
     public static void main(String[] args) throws IOException {
-        String[] test = new String[2];
-        test[0] = "123";
-        test[1] = "456";
-        String s = object2String(test);
-        String[] strings = string2Object(s, String[].class);
-        System.out.println(Arrays.toString(strings));
+        List<List<String>> list = new ArrayList<>();
+        list.add(ListUtil.of("123","456"));
+        list.add(ListUtil.of("789"));
+        String s = object2String(list);
+        List strings = string2Object(s, List.class);
+        System.out.println(strings);
         
     }
     
