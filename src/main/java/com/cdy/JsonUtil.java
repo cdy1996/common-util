@@ -21,11 +21,11 @@ public class JsonUtil {
         return object2StringByFastJson(o);
     }
     
-    public static <T> T parseObject(String json, Class<T> clazz) throws IOException {
+    public static <T> T parseObject(String json, Class<T> clazz) {
         return string2ObjectByFastJson(json, clazz);
     }
     
-    public static <T> List<T> parseArray(String json, Class<T> clazz) throws IOException {
+    public static <T> List<T> parseArray(String json, Class<T> clazz) {
         return string2ArrayByFastJson(json, clazz);
     }
     
@@ -44,11 +44,11 @@ public class JsonUtil {
         return mapper.readValue(json,new TypeReference<List<T>>() { });
     }
     
-    private static <T> List<T> string2ArrayByFastJson(String json, Class<T> clazz) throws IOException {
+    private static <T> List<T> string2ArrayByFastJson(String json, Class<T> clazz) {
         return JSONObject.parseArray(json, clazz);
     }
     
-    private static <T> T string2ObjectByFastJson(String json, Class<T> clazz) throws IOException {
+    private static <T> T string2ObjectByFastJson(String json, Class<T> clazz) {
         return JSONObject.parseObject(json, clazz);
     }
     

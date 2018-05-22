@@ -17,54 +17,30 @@ public class JedisUtil {
     }
     
     public static String set(String key, String value){
-        Jedis jedis = null ;
-        try {
-            jedis = jPool.getResource();
+        try (Jedis jedis = jPool.getResource()) {
             String result = jedis.set(key, value);
-            jedis.expire(key, 60*60);
+            jedis.expire(key, 60 * 60);
             return result;
-        }finally {
-            if(jedis != null){
-                jedis.close();
-            }
         }
     }
     
     public static String set(String key, String value, int time){
-        Jedis jedis = null ;
-        try {
-            jedis = jPool.getResource();
+        try (Jedis jedis = jPool.getResource()) {
             String result = jedis.set(key, value);
             jedis.expire(key, time);
             return result;
-        }finally {
-            if(jedis != null){
-                jedis.close();
-            }
         }
     }
     
     public static String get(String key) {
-        Jedis jedis = null ;
-        try {
-            jedis =  jPool.getResource();
+        try (Jedis jedis = jPool.getResource()) {
             return jedis.get(key);
-        }finally {
-            if(jedis != null){
-                jedis.close();
-            }
         }
     }
     
     public static void delete(String key) {
-        Jedis jedis = null ;
-        try {
-            jedis =  jPool.getResource();
+        try (Jedis jedis = jPool.getResource()) {
             jedis.del(key);
-        }finally {
-            if(jedis != null){
-                jedis.close();
-            }
         }
     }
     
