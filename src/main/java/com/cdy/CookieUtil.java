@@ -16,8 +16,7 @@ public class CookieUtil {
         if(cookies != null){
             for (Cookie cookie : cookies) {
                 if (key.equalsIgnoreCase(cookie.getName())) {
-                    String username = cookie.getValue();
-                    return username;
+                    return cookie.getValue();
                 }
             }
         }
