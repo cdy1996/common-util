@@ -16,7 +16,19 @@ public class FileUtil {
         
     }
     
-    public static FileInputStream openFile(File file) throws IOException {
+    public static FileInputStream openFileInputStream(File file) throws IOException {
         return FileUtils.openInputStream(file);
+    }
+    
+    public static FileInputStream openFileInputStream(String path) throws IOException {
+        return openFileInputStream(new File(path));
+    }
+    
+    public static FileOutputStream openFileOutputStream(File file) throws IOException {
+        return FileUtils.openOutputStream(file);
+    }
+    
+    public static FileOutputStream openFileOutputStream(String path) throws IOException {
+        return openFileOutputStream(new File(path));
     }
 }

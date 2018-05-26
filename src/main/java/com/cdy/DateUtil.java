@@ -19,4 +19,22 @@ public class DateUtil {
         SimpleDateFormat dateformat = new SimpleDateFormat(pattern);
         return dateformat.parse(date);
     }
+    
+    public static String format(Date date) throws ParseException {
+        return format(date);
+    }
+    
+    public static String format(String date) throws ParseException {
+        return format(date);
+    }
+    
+    public static String format(Date date, String pattern) throws ParseException {
+        SimpleDateFormat dateformat = new SimpleDateFormat(pattern);
+        return dateformat.format(date);
+    }
+    
+    public static String format(String date, String pattern) throws ParseException {
+        SimpleDateFormat dateformat = new SimpleDateFormat(pattern);
+        return dateformat.format(string2Date(date));
+    }
 }
