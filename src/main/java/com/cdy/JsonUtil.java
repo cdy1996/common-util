@@ -10,21 +10,40 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * todo
+ * json工具类
  * Created by 陈东一
  * 2018/5/15 22:30
  */
 public class JsonUtil {
     
-    
+    /**
+     * 对象转json
+     * @param o Object
+     * @return String
+     * @throws JsonProcessingException
+     */
     public static String toJson(Object o) throws JsonProcessingException {
         return object2StringByFastJson(o);
     }
     
+    /**
+     * 解析json
+     * @param json String
+     * @param clazz Class<T> 类型
+     * @param <T> T
+     * @return T
+     */
     public static <T> T parseObject(String json, Class<T> clazz) {
         return string2ObjectByFastJson(json, clazz);
     }
     
+    /**
+     * 解析json到数组
+     * @param json String String
+     * @param clazz Class<T> clazz 成员的类型
+     * @param <T> T
+     * @return T
+     */
     public static <T> List<T> parseArray(String json, Class<T> clazz) {
         return string2ArrayByFastJson(json, clazz);
     }
@@ -55,6 +74,11 @@ public class JsonUtil {
     private static String object2StringByFastJson(Object o) {
         return JSONObject.toJSONString(o);
     }
+    
+    
+    
+    
+    
     
     public static void main(String[] args) throws IOException {
         List<String> list = new ArrayList<>();

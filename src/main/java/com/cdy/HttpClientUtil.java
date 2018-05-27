@@ -16,12 +16,18 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * todo
+ * http请求工具类
  * Created by 陈东一
  * 2018/5/20 14:38
  */
 public class HttpClientUtil {
     
+    /**
+     * 发送get请求
+     * @param url String
+     * @return String
+     * @throws IOException
+     */
     public static String doGet(String url) throws IOException {
         HttpGet get = new HttpGet(url);
         try (CloseableHttpClient httpClient = HttpClients.createDefault(); CloseableHttpResponse response = httpClient.execute(get)) {
@@ -34,6 +40,13 @@ public class HttpClientUtil {
         }
     }
     
+    /**
+     * 发送post请求
+     * @param url String
+     * @param parameter Map<String, String>  参数key和value
+     * @return String
+     * @throws IOException
+     */
     public static String doPost(String url, Map<String, String> parameter) throws IOException {
         HttpPost post = new HttpPost(url);
         List<BasicNameValuePair> list = parameter.entrySet().stream().map(e -> new BasicNameValuePair(e.getKey(), e.getValue())).collect(Collectors.toList());
