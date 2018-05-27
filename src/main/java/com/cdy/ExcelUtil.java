@@ -15,17 +15,23 @@ import java.text.ParseException;
 import java.util.*;
 
 /**
- * todo
+ * excel工具类
  * Created by 陈东一
  * 2018/5/24 23:14
  */
 public class ExcelUtil {
     
-    public static List<Map<String, Object>> readXlsx(InputStream fileInputStream) throws IOException {
+    private static final String EXCEL_XLS = "xls";
+    private static final String EXCEL_XLSX = "xlsx";
+    
+    /**
+     * 读取excel
+     */
+    private static List<Map<String, Object>> readXlsx(InputStream inputStream) throws IOException {
         XSSFWorkbook xssfWorkbook = null;
         try {
             int row;
-            xssfWorkbook = new XSSFWorkbook(fileInputStream);
+            xssfWorkbook = new XSSFWorkbook(inputStream);
             Map<String, Object> map;
             List<Map<String, Object>> list = new ArrayList<>();
             // Read the Sheet
@@ -51,7 +57,7 @@ public class ExcelUtil {
             }
             return list;
         } finally {
-            fileInputStream.close();
+            inputStream.close();
             if (xssfWorkbook != null) {
                 xssfWorkbook.close();//最后记得关闭工作簿
             }
@@ -59,6 +65,9 @@ public class ExcelUtil {
         
     }
     
+    /**
+     * 读取excel
+     */
     private static List<Map<String, Object>> readXls(InputStream inputStream) throws IOException {
         HSSFWorkbook hssfWorkbook = null;
         try {
@@ -101,6 +110,9 @@ public class ExcelUtil {
         }
     }
     
+    /**
+     * 获取单元格数据
+     */
     private static String getValue(Cell cell) {
         String value = null;
         switch (cell.getCellType()) {
@@ -143,10 +155,6 @@ public class ExcelUtil {
     
     /**
      * 获取文件扩展名
-     *
-     * @param path
-     * @return String
-     * @author zhang 2015-08-17 23:26
      */
     private static String getExt(String path) {
         if (path == null || "".equals(path) || !path.contains(".")) {
@@ -156,7 +164,12 @@ public class ExcelUtil {
         }
     }
     
-    
+    /**
+     * 读取excel
+     * @param path String
+     * @return List<Map<String, Object>> list对应列，map对应单元格，key是title，value是值
+     * @throws IOException
+     */
     public static List<Map<String, Object>> readExcel(String path) throws IOException {
         if (StringUtil.isNotBlank(path)) {
             String ext = getExt(path);
@@ -174,11 +187,11 @@ public class ExcelUtil {
         return new ArrayList<>();
     }
     
-    
-    private static final String EXCEL_XLS = "xls";
-    private static final String EXCEL_XLSX = "xlsx";
-    
-    
+    /**
+     * 清空excel数据
+     * @param path String
+     * @throws IOException
+     */
     public static void deleteRow(String path) throws IOException {
         File file = new File(path);
         Workbook workBook = null;
@@ -203,7 +216,13 @@ public class ExcelUtil {
         }
     }
     
-    
+    /**
+     * 从头写入excel
+     * @param title String[]
+     * @param list List<Map<String, Object>> list对应列，map对应单元格，key是title，value是值
+     * @param path String
+     * @throws IOException
+     */
     public static void writeExcel(String[] title, List<Map<String, Object>> list, String path) throws IOException {
         if (title.length == 0 || list == null) {
             return;
@@ -233,6 +252,13 @@ public class ExcelUtil {
         }
     }
     
+    /**
+     * 从尾写入excel
+     * @param title String[]
+     * @param list List<Map<String, Object>> list对应列，map对应单元格，key是title，value是值
+     * @param path String
+     * @throws IOException
+     */
     public static void writeExcelContinue(String[] title, List<Map<String, Object>> list, String path) throws IOException {
         if (title.length == 0 || list == null) {
             return;
@@ -260,9 +286,9 @@ public class ExcelUtil {
     }
     
     /**
-     * 判断Excel的版本,获取Workbook
+     * 判断文件是否存在，存在则删除
      */
-    public static Workbook getWorkbook(String path) throws IOException {
+    private static Workbook getWorkbook(String path) throws IOException {
         File file = new File(path);
         if (file.exists()) {
             file.delete();
@@ -276,7 +302,10 @@ public class ExcelUtil {
         return wb;
     }
     
-    public static Workbook getWorkbookContinue(String path) throws IOException {
+    /**
+     * 判断文件是否存在，不存在则抛异常
+     */
+    private static Workbook getWorkbookContinue(String path) throws IOException {
         File file = new File(path);
         if(!file.exists()){
             throw new RuntimeException();
@@ -289,6 +318,10 @@ public class ExcelUtil {
         }
         return wb;
     }
+    
+    
+    
+    
     
     public static void main(String[] args) throws IOException {
 //        testRead();

@@ -5,11 +5,12 @@ import org.apache.commons.io.FileUtils;
 import java.io.*;
 
 /**
- * todo
+ * 文件工具类
  * Created by 陈东一
  * 2018/5/15 22:32
  */
 public class FileUtil {
+    
     
     public static void toFile(InputStream inputStream, String path) throws IOException {
         FileUtils.copyInputStreamToFile(inputStream, new File(path));

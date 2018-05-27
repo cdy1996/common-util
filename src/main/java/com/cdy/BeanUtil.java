@@ -10,12 +10,20 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * todo
+ * bean工具类
  * Created by 陈东一
  * 2018/5/15 22:32
  */
 public class BeanUtil {
     
+    /**
+     * 将实体类转成map对象，实体的属性名称为key，实体的属性值为value
+     * @param obj Object
+     * @return Map<String, Object>
+     * @throws IntrospectionException
+     * @throws InvocationTargetException
+     * @throws IllegalAccessException
+     */
     public static Map<String, Object> bean2Map(Object obj) throws IntrospectionException, InvocationTargetException, IllegalAccessException {
         if (obj == null) {
             return null;
