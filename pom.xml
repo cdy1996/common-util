@@ -98,6 +98,14 @@
             <artifactId>poi-ooxml</artifactId>
             <version>3.12</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/commons-net/commons-net -->
+        <dependency>
+            <groupId>commons-net</groupId>
+            <artifactId>commons-net</artifactId>
+            <version>3.3</version>
+        </dependency>
+
     </dependencies>
 
     <build>
