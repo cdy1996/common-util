@@ -1,6 +1,7 @@
 package com.cdy;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -61,5 +62,10 @@ public class StringUtil {
         Matcher matcher = pattern.matcher(string);
         // 字符串是否与正则表达式相匹配
         return matcher.matches();
+    }
+    
+    
+    public static String toString(Object o){
+        return ReflectionToStringBuilder.toString(o);
     }
 }

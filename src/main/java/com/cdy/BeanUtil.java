@@ -1,5 +1,7 @@
 package com.cdy;
 
+import org.apache.commons.beanutils.BeanUtils;
+
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
@@ -38,11 +40,40 @@ public class BeanUtil {
                 // 得到property对应的getter方法
                 Method getter = property.getReadMethod();
                 Object value = getter.invoke(obj);
-                
                 map.put(key, value);
             }
         }
         return map;
-        
+    
+    }
+    
+//    public static Map<String, String> bean2Map(Object obj) throws InvocationTargetException, IllegalAccessException, NoSuchMethodException {
+//        return BeanUtils.describe(obj);
+//    }
+    
+    /**
+     * 将map转换为bean
+     * @param map Map<String, Object
+     * @param clazz Class
+     * @throws InvocationTargetException
+     * @throws IllegalAccessException
+     * @throws IntrospectionException
+     * @throws NoSuchMethodException
+     * @throws InstantiationException
+     */
+    public static void map2Bean(Map<String, Object> map, Class clazz) throws InvocationTargetException, IllegalAccessException, IntrospectionException, NoSuchMethodException, InstantiationException {
+//        Object obj = clazz.getDeclaredConstructor().newInstance();
+//        BeanInfo beanInfo = Introspector.getBeanInfo(obj.getClass());
+//        PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();
+//        for (PropertyDescriptor property : propertyDescriptors) {
+//            String key = property.getName();
+//            if (map.containsKey(key)) {
+//                Object value = map.get(key);
+//                // 得到property对应的setter方法
+//                Method setter = property.getWriteMethod();
+//                setter.invoke(obj, value);
+//            }
+//        }
+        BeanUtils.populate(clazz.getDeclaredConstructor().newInstance(), map);
     }
 }
