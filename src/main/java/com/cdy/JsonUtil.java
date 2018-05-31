@@ -22,7 +22,7 @@ public class JsonUtil {
      * @return String
      * @throws JsonProcessingException
      */
-    public static String toJson(Object o) throws JsonProcessingException {
+    public static String toString(Object o) throws JsonProcessingException {
         return object2StringByFastJson(o);
     }
     
@@ -84,7 +84,7 @@ public class JsonUtil {
         List<String> list = new ArrayList<>();
         list.add("123");
         list.add("789");
-        String s = toJson(list);
+        String s = toString(list);
         List<String> strings = JsonUtil.string2ArrayByJackson(s);
         System.out.println(strings);
     
