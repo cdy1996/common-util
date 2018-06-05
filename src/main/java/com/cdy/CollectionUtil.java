@@ -1,8 +1,6 @@
 package com.cdy;
 
-import org.apache.commons.collections.CollectionUtils;
-
-import java.util.*;
+import java.util.Collection;
 
 /**
  * 集合工具类
@@ -17,7 +15,7 @@ public class CollectionUtil {
      * @return Boolean
      */
     public static Boolean isEmpty(Collection collection){
-        return CollectionUtils.isEmpty(collection);
+        return (collection == null || collection.isEmpty());
     }
     
     /**
@@ -26,7 +24,7 @@ public class CollectionUtil {
      * @return Boolean
      */
     public static Boolean isNotEmpty(Collection collection){
-        return CollectionUtils.isNotEmpty(collection);
+        return !isEmpty(collection);
     }
     
   

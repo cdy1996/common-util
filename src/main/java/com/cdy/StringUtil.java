@@ -1,7 +1,7 @@
 package com.cdy;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -28,7 +28,7 @@ public class StringUtil {
      * @return Boolean
      */
     public static boolean isNotEmpty(String string){
-        return StringUtils.isNotEmpty(string);
+        return !isEmpty(string);
     }
     
     /**
@@ -46,7 +46,7 @@ public class StringUtil {
      * @return boolean
      */
     public static boolean isNotBlank(String string){
-        return StringUtils.isNotBlank(string);
+        return !isBlank(string);
     }
     
     /**
