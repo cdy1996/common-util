@@ -22,6 +22,9 @@ import java.util.stream.Collectors;
  */
 public class HttpClientUtil {
     
+    private static String defaultCharset = "utf-8";
+    
+    
     /**
      * 发送get请求
      * @param url String
@@ -34,7 +37,7 @@ public class HttpClientUtil {
             int statusCode = response.getStatusLine().getStatusCode();
             System.out.println(statusCode);
             HttpEntity entity = response.getEntity();
-            String string = EntityUtils.toString(entity, "utf-8");
+            String string = EntityUtils.toString(entity, defaultCharset);
             System.out.println(string);
             return string;
         }
@@ -51,14 +54,14 @@ public class HttpClientUtil {
         HttpPost post = new HttpPost(url);
         List<BasicNameValuePair> list = parameter.entrySet().stream().map(e -> new BasicNameValuePair(e.getKey(), e.getValue())).collect(Collectors.toList());
         if(list.size() > 0){
-            UrlEncodedFormEntity entity = new UrlEncodedFormEntity(list, "utf-8");
+            UrlEncodedFormEntity entity = new UrlEncodedFormEntity(list, defaultCharset);
             post.setEntity(entity);
         }
         try (CloseableHttpClient httpClient = HttpClients.createDefault(); CloseableHttpResponse response = httpClient.execute(post)) {
             int statusCode = response.getStatusLine().getStatusCode();
             System.out.println(statusCode);
             HttpEntity entity = response.getEntity();
-            String string = EntityUtils.toString(entity, "utf-8");
+            String string = EntityUtils.toString(entity, defaultCharset);
             System.out.println(string);
             return string;
         }

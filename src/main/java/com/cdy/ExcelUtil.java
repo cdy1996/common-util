@@ -175,9 +175,9 @@ public class ExcelUtil {
             String ext = getExt(path);
             FileInputStream inputStream = FileUtil.openFileInputStream(path);
             if (StringUtil.isNotBlank(ext)) {
-                if ("xls".equals(ext)) {
+                if (EXCEL_XLS.equals(ext)) {
                     return readXls(inputStream);
-                } else if ("xlsx".equals(ext)) {
+                } else if (EXCEL_XLSX.equals(ext)) {
                     return readXlsx(inputStream);
                 } else {
                     return new ArrayList<>();

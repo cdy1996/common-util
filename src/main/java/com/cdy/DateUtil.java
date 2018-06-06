@@ -10,6 +10,8 @@ import java.util.Date;
  * 2018/5/18 20:35
  */
 public class DateUtil {
+    private static String pattern = "yyyy-MM-dd";
+    
     
     /**
      * 字符串转为日期，接受的格式为yyyy-MM-dd
@@ -18,7 +20,8 @@ public class DateUtil {
      * @throws ParseException
      */
     public static Date string2Date(String date) throws ParseException {
-        return string2Date(date, "yyyy-MM-dd");
+        
+        return string2Date(date, pattern);
     }
     
     /**
@@ -40,7 +43,7 @@ public class DateUtil {
      * @throws ParseException
      */
     public static String format(Date date) throws ParseException {
-        return format(date, "yyyy-MM-dd");
+        return format(date, pattern);
     }
     
     /**
@@ -50,7 +53,7 @@ public class DateUtil {
      * @throws ParseException
      */
     public static String format(String date) throws ParseException {
-        return format(date, "yyyy-MM-dd");
+        return format(date, pattern);
     }
     
     /**

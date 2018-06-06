@@ -10,13 +10,17 @@ import java.text.DecimalFormat;
  */
 public class NumberUtil {
     
+    private static String pattern = "0.00";
+    private static int scale = 2;
+    
     /**
      * 数字格式化 保留2为小鼠
      * @param num String
      * @return String
      */
     public static String format(String num){
-        return format(num, "0.00");
+        
+        return format(num, pattern);
     }
     
     /**
@@ -35,7 +39,9 @@ public class NumberUtil {
      * @return BigDecimal
      */
     public static BigDecimal format(BigDecimal bigDecimal){
-        return format(bigDecimal, 2);
+        
+        
+        return format(bigDecimal, scale);
     }
     
     /**

@@ -10,10 +10,14 @@ import redis.clients.jedis.JedisPool;
  */
 public class JedisUtil {
     
-    public static JedisPool jPool;
+    private static JedisPool jPool;
+    private static int time = 60 * 60;
+    private static String localhost = "localhost";
+    private static int port = 6379;
     
     static{
-        jPool = new JedisPool("localhost",6379);
+       
+        jPool = new JedisPool(localhost, port);
     }
     
     /**
@@ -23,7 +27,8 @@ public class JedisUtil {
      * @return String
      */
     public static String set(String key, String value){
-        return set(key, value, 60 * 60);
+        
+        return set(key, value, time);
     }
     
     /**
