@@ -12,12 +12,17 @@ public class JedisUtil {
     
     private static JedisPool jPool;
     private static int time = 60 * 60;
-    private static String localhost = "localhost";
-    private static int port = 6379;
+    private static String localhost = "192.168.2.101";
+    private static int port = 6001;
     
     static{
        
         jPool = new JedisPool(localhost, port);
+    }
+    
+    public static void main(String[] args) {
+        String name = get("name");
+        System.out.println(name);
     }
     
     /**
