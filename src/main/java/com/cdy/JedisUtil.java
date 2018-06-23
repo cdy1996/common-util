@@ -1,91 +1,52 @@
 package com.cdy;
 
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPool;
-
 /**
  * redis工具类
  * Created by 陈东一
  * 2018/5/20 15:16
  */
-public class JedisUtil {
+public interface  JedisUtil{
     
-    private static JedisPool jPool;
-    private static int time = 60 * 60;
-    private static String localhost = "192.168.2.101";
-    private static int port = 6001;
+    int redis_max_total = 10; //最大连接数, 默认8个
+    int redis_max_idle = 10; //最大空闲连接数, 默认8个
     
-    static{
-       
-        jPool = new JedisPool(localhost, port);
-    }
-    
-    public static void main(String[] args) {
-        String name = get("name");
-        System.out.println(name);
-    }
+    void init();
     
     /**
-     * 添加，失效时间60*60
-     * @param key String
-     * @param value String
-     * @return String
+     * 设置值
+     * @param key
+     * @param value
+     * @return
      */
-    public static String set(String key, String value){
-        
-        return set(key, value, time);
-    }
+    String set(String key, String value);
     
     /**
-     * 添加
-     * @param key String
-     * @param value String
-     * @param time int
-     * @return String
+     * 设置会过期的值
+     * @param key
+     * @param value
+     * @param time
+     * @return
      */
-    public static String set(String key, String value, int time){
-        try (Jedis jedis = jPool.getResource()) {
-            String result = jedis.set(key, value);
-            jedis.expire(key, time);
-            return result;
-        }
-    }
+    String set(String key, String value, int time);
     
     /**
-     * 获取
-     * @param key String
-     * @return String
+     * 获取值
+     * @param key
+     * @return
      */
-    public static String get(String key) {
-        try (Jedis jedis = jPool.getResource()) {
-            return jedis.get(key);
-        }
-    }
+    String get(String key);
+    
     
     /**
-     * 删除
-     * @param key String
+     * 删除key
+     * @param key
      */
-    public static void delete(String key) {
-        try (Jedis jedis = jPool.getResource()) {
-            jedis.del(key);
-        }
-    }
+    void delete(String ...key);
     
     /**
      * 设置失效时间
-     * @param key String
-     * @param time int
+     * @param key
+     * @param time
      */
-    public static void expire(String key, int time){
-        Jedis jedis = null ;
-        try {
-            jedis = jPool.getResource();
-            jedis.expire(key, time);
-        }finally {
-            if(jedis != null){
-                jedis.close();
-            }
-        }
-    }
+    void expire(String key, int time);
 }

@@ -20,9 +20,8 @@ public class JsonUtil {
      * 对象转json
      * @param o Object
      * @return String
-     * @throws JsonProcessingException
      */
-    public static String toString(Object o) throws JsonProcessingException {
+    public static String toString(Object o) {
         return object2StringByFastJson(o);
     }
     

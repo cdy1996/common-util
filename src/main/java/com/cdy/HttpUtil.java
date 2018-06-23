@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
  * Created by 陈东一
  * 2018/5/20 14:38
  */
-public class HttpClientUtil {
+public class HttpUtil {
     
     private static String defaultCharset = "utf-8";
     
@@ -42,6 +42,8 @@ public class HttpClientUtil {
             return string;
         }
     }
+    
+
     
     /**
      * 发送post请求

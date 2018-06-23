@@ -50,7 +50,7 @@ public class MD5Util {
      * @return
      */
     public static String encryptPassword(String username, String password, String salt) throws UnsupportedEncodingException, NoSuchAlgorithmException {
-        return MD5Util.hash(username + password + salt);
+        return hash(username + password + salt);
     }
     
     /**
@@ -60,7 +60,7 @@ public class MD5Util {
      * @return
      */
     public static String encryptPassword(String password, String salt) throws UnsupportedEncodingException, NoSuchAlgorithmException {
-        return MD5Util.hash(password + salt);
+        return hash(password + salt);
     }
     
 }

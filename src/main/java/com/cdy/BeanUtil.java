@@ -17,7 +17,7 @@ import java.util.Map;
 public class BeanUtil {
     
     /**
-     * 将实体类转成map对象，实体的属性名称为key，实体的属性值为value
+     * 将实体类转成map对象，实体的属性名称为key，实体的属性值为value  ==>BeanUtils.describe(obj)
      * @param obj Object
      * @return Map<String, Object>
      * @throws IntrospectionException
@@ -45,12 +45,9 @@ public class BeanUtil {
     
     }
     
-//    public static Map<String, String> bean2Map(Object obj) throws InvocationTargetException, IllegalAccessException, NoSuchMethodException {
-//        return BeanUtils.describe(obj);
-//    }
     
     /**
-     * 将map转换为bean
+     * 将map转换为bean ==>BeanUtils.populate(clazz.getDeclaredConstructor().newInstance(), map);
      * @param map Map<String, Object
      * @param clazz Class
      * @throws InvocationTargetException
@@ -72,6 +69,5 @@ public class BeanUtil {
                 setter.invoke(obj, value);
             }
         }
-//        BeanUtils.populate(clazz.getDeclaredConstructor().newInstance(), map);
     }
 }
