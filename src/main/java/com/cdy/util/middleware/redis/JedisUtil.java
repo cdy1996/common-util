@@ -1,4 +1,4 @@
-package com.cdy;
+package com.cdy.util.middleware.redis;
 
 /**
  * redis工具类

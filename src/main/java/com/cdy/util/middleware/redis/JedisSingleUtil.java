@@ -1,4 +1,4 @@
-package com.cdy;
+package com.cdy.util.middleware.redis;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;

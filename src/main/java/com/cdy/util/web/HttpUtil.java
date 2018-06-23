@@ -1,4 +1,4 @@
-package com.cdy;
+package com.cdy.util.web;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.client.entity.UrlEncodedFormEntity;

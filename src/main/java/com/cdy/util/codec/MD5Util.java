@@ -1,4 +1,4 @@
-package com.cdy;
+package com.cdy.util.codec;
 
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;

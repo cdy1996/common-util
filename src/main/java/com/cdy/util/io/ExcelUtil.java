@@ -1,9 +1,10 @@
-package com.cdy;
+package com.cdy.util.io;
 
+import com.cdy.util.NumberUtil;
+import com.cdy.util.StringUtil;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.*;
@@ -207,7 +208,7 @@ public class ExcelUtil {
             case HSSFCell.CELL_TYPE_NUMERIC: // 数字
                 if (DateUtil.isCellDateFormatted(cell)) {
                     try {
-                        value = com.cdy.DateUtil.format(cell.getDateCellValue()); //日期型
+                        value = com.cdy.util.DateUtil.format(cell.getDateCellValue()); //日期型
                     } catch (ParseException e) {
                         value = cell.getDateCellValue().toString();
                     }

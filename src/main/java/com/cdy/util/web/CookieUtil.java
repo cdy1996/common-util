@@ -1,4 +1,4 @@
-package com.cdy;
+package com.cdy.util.web;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;

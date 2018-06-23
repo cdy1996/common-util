@@ -1,4 +1,4 @@
-package com.cdy;
+package com.cdy.util.serialization;
 
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.core.JsonProcessingException;

@@ -1,5 +1,6 @@
-package com.cdy;
+package com.cdy.util.io;
 
+import com.cdy.util.StringUtil;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;

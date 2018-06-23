@@ -1,4 +1,4 @@
-package com.cdy;
+package com.cdy.util.collections;
 
 import java.util.ArrayList;
 import java.util.Arrays;
