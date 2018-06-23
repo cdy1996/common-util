@@ -13,7 +13,6 @@ public class JedisSingleUtil implements JedisUtil{
     
     private JedisPool jPool;
     private JedisPoolConfig config;
-    private int time = 60 * 60;
     private String host;
     private int port;
     
@@ -21,7 +20,7 @@ public class JedisSingleUtil implements JedisUtil{
     
     
     public JedisSingleUtil(int time, String host, int port) {
-        this.time = time;
+        int time1 = time;
         this.host = host;
         this.port = port;
     }
@@ -30,6 +29,8 @@ public class JedisSingleUtil implements JedisUtil{
     public void init() {
         jPool = new JedisPool(host, port);
     }
+    
+    
     
     public static void main(String[] args) {
         JedisSingleUtil jedisUtil = new JedisSingleUtil(60 * 60, "192.168.2.101", 6001);

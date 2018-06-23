@@ -17,7 +17,6 @@ public class JedisSentinelUtil implements JedisUtil {
     
     private JedisSentinelPool jedisPool;
     private JedisPoolConfig config;
-    private int time = 60 * 60;
     private Set<String> sentinels = new HashSet<>();
     private String masterName;
     private String password;
