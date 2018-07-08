@@ -1,17 +1,16 @@
 该项目主要是工具类项目，收集平常自己用的工具类
 
 
-包介绍
+common包介绍
 
-common
 
->|-core 
+>core 
 >
 >  |-exeception 异常封装包
 >  
 >  |-result 返回封装包
 >  
->|-util
+>util
 >
 >  |-codec 编解码工具类
 >  
