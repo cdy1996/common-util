@@ -4,8 +4,8 @@
 包介绍
 
 common
-
-|-core
+\\\
+|-core 
   |-exeception 异常封装包
   |-result 返回封装包
 |-util
@@ -15,3 +15,4 @@ common
   |-middleware 中间件工具类
   |-serialization 序列化工具类
   |-web web相关工具类
+\\\
