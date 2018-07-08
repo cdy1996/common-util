@@ -25,3 +25,7 @@ common包介绍
 >  |-web web相关工具类
   
 
+
+redis 主从配置(哨兵监控) 以及redis工具类编写
+
+https://blog.csdn.net/cdy1996/article/details/80632106
