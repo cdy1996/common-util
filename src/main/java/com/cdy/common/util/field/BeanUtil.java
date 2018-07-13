@@ -1,4 +1,4 @@
-package com.cdy.common.util;
+package com.cdy.common.util.field;
 
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;

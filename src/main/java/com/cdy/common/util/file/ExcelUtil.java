@@ -1,7 +1,8 @@
-package com.cdy.common.util.io;
+package com.cdy.common.util.file;
 
-import com.cdy.common.util.StringUtil;
-import com.cdy.common.util.NumberUtil;
+import com.cdy.common.util.field.NumberUtil;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
@@ -31,13 +32,13 @@ public class ExcelUtil {
     public static List<Map<String, Object>> readExcel(String path) throws IOException {
         Workbook workbook = null;
         FileInputStream inputStream = null;
-        if (StringUtil.isNotBlank(path)) {
+        if (StringUtils.isNotBlank(path)) {
             String ext = getFileExt(path);
-            if (StringUtil.isNotBlank(ext)) {
+            if (StringUtils.isBlank(ext)) {
                 return new ArrayList<>();
             }
             try {
-                inputStream = FileUtil.openFileInputStream(path);
+                inputStream = FileUtils.openInputStream(new File(path));
                 if (EXCEL_XLS.equalsIgnoreCase(ext)) {
                     workbook = new HSSFWorkbook(inputStream);
                     return read(workbook);
@@ -66,7 +67,8 @@ public class ExcelUtil {
      * @return List list对应列，map对应单元格，key是title，value是值
      * @throws IOException
      */
-    public static List<Map<String, Object>> readExcel(FileInputStream inputStream, boolean isXLS) throws IOException {
+    public static List<Map<String, Object>> readExcel(FileInputStream inputStream, boolean isXLS)
+            throws IOException {
         Workbook workbook = null;
         try {
             if (isXLS) {
@@ -147,8 +149,8 @@ public class ExcelUtil {
     
     
     public static void main(String[] args) throws IOException {
-//        testRead();
-        testWrite();
+        testRead();
+//        testWrite();
     }
     
     private static void testRead() throws IOException {
@@ -208,7 +210,7 @@ public class ExcelUtil {
             case HSSFCell.CELL_TYPE_NUMERIC: // 数字
                 if (DateUtil.isCellDateFormatted(cell)) {
                     try {
-                        value = com.cdy.common.util.DateUtil.format(cell.getDateCellValue()); //日期型
+                        value = com.cdy.common.util.field.DateUtil.format(cell.getDateCellValue()); //日期型
                     } catch (ParseException e) {
                         value = cell.getDateCellValue().toString();
                     }
@@ -257,7 +259,7 @@ public class ExcelUtil {
             throw new RuntimeException("The file is exist.");
         }
         try (FileOutputStream out = new FileOutputStream(path)) {
-            write(title, list, out, EXCEL_XLS.equalsIgnoreCase(getFileExt(path)), isNew, FileUtil.openFileInputStream(file));
+            write(title, list, out, EXCEL_XLS.equalsIgnoreCase(getFileExt(path)), isNew, FileUtils.openInputStream(file));
         }
     }
     

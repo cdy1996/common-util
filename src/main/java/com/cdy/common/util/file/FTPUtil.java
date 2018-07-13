@@ -1,12 +1,16 @@
-package com.cdy.common.util.io;
+package com.cdy.common.util.file;
 
-import com.cdy.common.util.StringUtil;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * ftp工具类
@@ -81,7 +85,7 @@ public class FTPUtil {
             String[] dirs = path.split("/");
             StringBuilder base = new StringBuilder("/");
             for (String dir : dirs) {
-                if (StringUtil.isBlank(dir)) {
+                if (StringUtils.isBlank(dir)) {
                     continue;
                 }
                 base.append(File.separator).append(dir);
@@ -121,7 +125,7 @@ public class FTPUtil {
                         if (ff.getName().equals(fileName)) {
                             if (ff.isFile()) {
                                 File localFile = new File(localPath + File.separator + ff.getName());
-                                outputStream = FileUtil.openFileOutputStream(localFile);
+                                outputStream = FileUtils.openOutputStream(localFile);
                                 ftp.retrieveFile(ff.getName(), outputStream);
                                 
                                 return true;

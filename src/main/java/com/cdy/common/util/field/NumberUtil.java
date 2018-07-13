@@ -1,4 +1,4 @@
-package com.cdy.common.util;
+package com.cdy.common.util.field;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;

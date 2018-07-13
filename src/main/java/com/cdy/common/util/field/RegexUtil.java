@@ -1,4 +1,6 @@
-package com.cdy.common.util;
+package com.cdy.common.util.field;
+
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -8,7 +10,7 @@ import java.util.regex.Pattern;
  * Created by 陈东一
  * 2018/5/15 22:31
  */
-public class StringUtil {
+public class RegexUtil {
     
     //邮箱，手机，姓名，昵称，身份证号，银行卡号等；
     public static final String MAIL_PATTERN =     "^([a-zA-Z0-9_\\-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([a-zA-Z0-9\\-]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)$";
@@ -21,51 +23,6 @@ public class StringUtil {
     public static final String ID_PATTERN =       "^\\d{6}(\\d{8}|\\d{11})[0-9a-zA-Z]$";
     public static final String BANK_CARD_PATTERN ="^\\d{16,30}$";
     
-    
-    /**
-     * 判断是否为空
-     * @param string String
-     * @return Boolean
-     */
-    public static boolean isEmpty(String string){
-        return string == null || string.length() == 0;
-    }
-    
-    /**
-     * 判断是否不为空
-     * @param string String
-     * @return Boolean
-     */
-    public static boolean isNotEmpty(String string){
-        return !isEmpty(string);
-    }
-    
-    /**
-     * 判断是否为空白
-     * @param string String
-     * @return boolean
-     */
-    public static boolean isBlank(String string){
-        int strLen;
-        if (string == null || (strLen = string.length()) == 0) {
-            return true;
-        }
-        for (int i = 0; i < strLen; i++) {
-            if (!Character.isWhitespace(string.charAt(i))) {
-                return false;
-            }
-        }
-        return true;
-    }
-    
-    /**
-     * 判断是否为不空白
-     * @param string String
-     * @return boolean
-     */
-    public static boolean isNotBlank(String string){
-        return !isBlank(string);
-    }
     
     /**
      * 正则检查是否匹配
@@ -101,7 +58,7 @@ public class StringUtil {
      */
     public static String maskMobile(String mobile, String transCode) {
         if (match(mobile, MOBILE_PATTERN)) {
-            transCode = StringUtil.isEmpty(transCode) ? "****" : transCode;
+            transCode = StringUtils.isEmpty(transCode) ? "****" : transCode;
             return mobile.replaceAll("(\\d{3})\\d{4}(\\d{4})", String.format("$1%s$2", transCode));
         }
         return mobile;

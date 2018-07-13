@@ -1,4 +1,4 @@
-package com.cdy.common.util;
+package com.cdy.common.util.field;
 
 import org.apache.commons.lang3.StringUtils;
 

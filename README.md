@@ -13,6 +13,8 @@ common包介绍
 >util
 >
 >  |-codec 编解码工具类
+>
+>  |-field 字段操作工具类
 >  
 >  |-collections 集合工具类
 >  
