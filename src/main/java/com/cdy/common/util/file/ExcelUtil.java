@@ -2,15 +2,15 @@ package com.cdy.common.util.file;
 
 import com.cdy.common.util.field.NumberUtil;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.*;
-import java.text.ParseException;
 import java.util.*;
+
+import static java.util.stream.Collectors.joining;
 
 /**
  * excel工具类
@@ -28,34 +28,10 @@ public class ExcelUtil {
      * @param path String
      * @return List list对应列，map对应单元格，key是title，value是值
      * @throws IOException
+     * @throws InvalidFormatException
      */
-    public static List<Map<String, Object>> readExcel(String path) throws IOException {
-        Workbook workbook = null;
-        FileInputStream inputStream = null;
-        if (StringUtils.isNotBlank(path)) {
-            String ext = getFileExt(path);
-            if (StringUtils.isBlank(ext)) {
-                return new ArrayList<>();
-            }
-            try {
-                inputStream = FileUtils.openInputStream(new File(path));
-                if (EXCEL_XLS.equalsIgnoreCase(ext)) {
-                    workbook = new HSSFWorkbook(inputStream);
-                    return read(workbook);
-                } else {
-                    workbook = new XSSFWorkbook(inputStream);
-                    return read(workbook);
-                }
-            } finally {
-                if (workbook != null) {
-                    workbook.close();
-                }
-                if (inputStream != null) {
-                    inputStream.close();
-                }
-            }
-        }
-        return new ArrayList<>();
+    public static List<Map<String, Object>> read(String path) throws IOException, InvalidFormatException {
+        return read(FileUtils.openInputStream(new File(path)));
     }
     
     
@@ -63,121 +39,25 @@ public class ExcelUtil {
      * 读取excel
      *
      * @param inputStream 文件输入流
-     * @param isXLS       是否是xls类型
      * @return List list对应列，map对应单元格，key是title，value是值
      * @throws IOException
+     * @throws InvalidFormatException
      */
-    public static List<Map<String, Object>> readExcel(FileInputStream inputStream, boolean isXLS)
-            throws IOException {
+    public static List<Map<String, Object>> read(FileInputStream inputStream) throws IOException, InvalidFormatException {
         Workbook workbook = null;
         try {
-            if (isXLS) {
-                workbook = new HSSFWorkbook(inputStream);
-                return read(workbook);
-            } else {
-                workbook = new XSSFWorkbook(inputStream);
-                return read(workbook);
-            }
+            workbook = WorkbookFactory.create(inputStream);
+            return doRead(workbook);
         } finally {
-            if (workbook != null) {
-                workbook.close();
-            }
+            workbook.close();
             inputStream.close();
         }
     }
     
-    
-    /**
-     * 用于写入excel文件
-     *
-     * @param title
-     * @param list
-     * @param path
-     * @param isNew
-     * @throws IOException
-     */
-    public static void writeExcel(String[] title, List<Map<String, Object>> list, String path, Boolean isNew) throws IOException {
-        write(title, list, path, isNew);
-    }
-    
-    /**
-     * 用于导出excel文件
-     *
-     * @param title
-     * @param list
-     * @param outputStream
-     * @param isXls
-     * @throws IOException
-     */
-    public static void writeExcel(String[] title, List<Map<String, Object>> list, OutputStream outputStream, Boolean isXls) throws IOException {
-        write(title, list, outputStream, true, isXls, null);
-    }
-    
-    
-    /**
-     * 从头写入excel
-     *
-     * @param title String[]
-     * @param list  List<Map<String, Object>> list对应列，map对应单元格，key是title，value是值
-     */
-    public static void write(String[] title, List<Map<String, Object>> list, Workbook workBook, boolean isNew) {
-        if (workBook.getNumberOfSheets() == 0) {
-            workBook.createSheet();
-        }
-        Sheet sheet = workBook.getSheetAt(0);
-        
-        // 写入title
-        Row row;
-        if (isNew) {
-            row = sheet.createRow(sheet.getLastRowNum());
-            for (int i = 0; i < title.length; i++) {
-                row.createCell(i).setCellValue(title[i]);
-            }
-        }
-        
-        Map<String, Object> map;
-        int lastRowNum = sheet.getLastRowNum();
-        for (Map<String, Object> aList : list) {
-            row = sheet.createRow(++lastRowNum);
-            map = aList;
-            for (int j = 0; j < title.length; j++) {
-                row.createCell(j).setCellValue(map.get(title[j]).toString());
-            }
-        }
-        
-    }
-    
-    
-    public static void main(String[] args) throws IOException {
-        testRead();
-//        testWrite();
-    }
-    
-    private static void testRead() throws IOException {
-        List<Map<String, Object>> maps = readExcel("D:\\迅雷下载\\我的文件\\大学\\陈东一校友卡申请信息.xls");
-        maps.forEach(e -> {
-            Set<Map.Entry<String, Object>> entries = e.entrySet();
-            entries.forEach(System.out::println);
-        });
-    }
-    
-    private static void testWrite() throws IOException {
-        String path = "C:\\Users\\cdy1996\\Desktop\\testWrite.xls";
-        String[] title = {"1", "2", "3"};
-        Map<String, Object> map = new HashMap<>();
-        map.put("1", "111");
-        map.put("2", "222");
-        map.put("3", "333");
-        List<Map<String, Object>> list = new ArrayList<>();
-        list.add(map);
-        writeExcel(title, list, path, true);
-        
-    }
-    
-    private static List<Map<String, Object>> read(Workbook workbook) throws IOException {
+    private static List<Map<String, Object>> doRead(Workbook workbook) {
         Map<String, Object> map;
         Row title;
-        int i = 0;
+        int i;
         List<Map<String, Object>> list = new ArrayList<>();
         // Read the Sheet
         for (int numSheet = 0; numSheet < workbook.getNumberOfSheets(); numSheet++) {
@@ -203,38 +83,33 @@ public class ExcelUtil {
         return list;
     }
     
-    
     private static String getCellValue(Cell cell) {
         String value = null;
         switch (cell.getCellType()) {
-            case HSSFCell.CELL_TYPE_NUMERIC: // 数字
+            case Cell.CELL_TYPE_NUMERIC: // 数字
                 if (DateUtil.isCellDateFormatted(cell)) {
-                    try {
-                        value = com.cdy.common.util.field.DateUtil.format(cell.getDateCellValue()); //日期型
-                    } catch (ParseException e) {
-                        value = cell.getDateCellValue().toString();
-                    }
+                    value = com.cdy.common.util.field.DateUtil.toString(cell.getDateCellValue()); //日期型
                 } else {
-                    value = NumberUtil.format(cell.getNumericCellValue(), 0).toString(); //数字型
+                    value = NumberUtil.format(cell.getNumericCellValue()).toString(); //数字型
                 }
                 break;
-            case HSSFCell.CELL_TYPE_STRING: // 字符串
+            case Cell.CELL_TYPE_STRING: // 字符串
                 value = cell.getStringCellValue();
                 break;
-            case HSSFCell.CELL_TYPE_BOOLEAN: // Boolean
+            case Cell.CELL_TYPE_BOOLEAN: // Boolean
                 value = String.valueOf(cell.getBooleanCellValue());
                 break;
-            case HSSFCell.CELL_TYPE_FORMULA: // 公式
+            case Cell.CELL_TYPE_FORMULA: // 公式
                 try {
                     value = String.valueOf(cell.getStringCellValue());
                 } catch (IllegalStateException e) {
                     value = String.valueOf(cell.getNumericCellValue());
                 }
                 break;
-            case HSSFCell.CELL_TYPE_BLANK: // 空值
+            case Cell.CELL_TYPE_BLANK: // 空值
                 value = "";
                 break;
-            case HSSFCell.CELL_TYPE_ERROR: // 故障
+            case Cell.CELL_TYPE_ERROR: // 故障
                 value = "非法字符";
                 break;
             default:
@@ -244,7 +119,80 @@ public class ExcelUtil {
         return value;
     }
     
+    private static void testRead() throws IOException, InvalidFormatException {
+        List<Map<String, Object>> maps = read("D:\\迅雷下载\\我的文件\\大学\\陈东一校友卡申请信息.xls");
+        print(maps);
+    }
+    
+    private static void print(List<Map<String, Object>> maps){
+        maps.forEach(e -> {
+            Set<Map.Entry<String, Object>> entries = e.entrySet();
+            System.out.println(entries.stream().map(Object::toString).collect(joining(",")));
+        });
+    }
+    
+    public static void main(String[] args) throws IOException, InvalidFormatException {
+        
+        Workbook workbook = testWrite();
+        List<Map<String, Object>> list = doRead(workbook);
+        print(list);
+        workbook.close();
+//        testRead();
+    }
+    
+    
+    private static Workbook testWrite() throws IOException {
+        String path = "C:\\Users\\cdy1996\\Desktop\\testWrite.xls";
+        String[] title = {"1", "2", "3"};
+        Map<String, Object> map = new HashMap<>();
+        map.put("1", "111");
+        map.put("2", "222");
+        map.put("3", "333");
+        List<Map<String, Object>> list = new ArrayList<>();
+        list.add(map);
+        return write(title, list, true);
+    
+    }
+    
+    
+    private static Workbook write(String[] title, List<Map<String, Object>> list, boolean isXls) {
+        Workbook wb = null;
+        if (isXls) {  //Excel 2003
+            wb = new HSSFWorkbook();
+        } else {  // Excel 2007/2010
+            wb = new XSSFWorkbook();
+        }
+        return doWrite(title, list, wb);
+    }
+    
 
+    
+    /**
+     * 用于写入excel文件
+     *
+     * @param title  标题
+     * @param list   内容
+     * @param path   文件路径
+     * @throws IOException
+     */
+    public static void write(String[] title, List<Map<String, Object>> list, String path)
+            throws IOException {
+        Workbook wb;
+        if (EXCEL_XLS.equalsIgnoreCase(getFileExt(path))) {  //Excel 2003
+            wb = new HSSFWorkbook();
+        } else {
+            wb = new XSSFWorkbook();
+        }
+        doWrite(title, list, wb);
+        File file = new File(path);
+        if(file.exists()){
+            file.delete();
+        }
+        try(FileOutputStream outputStream = FileUtils.openOutputStream(file)) {
+            wb.write(outputStream);
+        }
+    }
+    
     private static String getFileExt(String path) {
         if (path == null || "".equals(path) || !path.contains(".")) {
             throw new RuntimeException("The file is not excel.");
@@ -253,40 +201,28 @@ public class ExcelUtil {
         }
     }
     
-    private static void write(String[] title, List<Map<String, Object>> list, String path, boolean isNew) throws IOException {
-        File file = new File(path);
-        if (file.exists()) {
-            throw new RuntimeException("The file is exist.");
+    private static Workbook doWrite(String[] title, List<Map<String, Object>> list, Workbook workBook) {
+        if (workBook.getNumberOfSheets() == 0) {
+            workBook.createSheet();
         }
-        try (FileOutputStream out = new FileOutputStream(path)) {
-            write(title, list, out, EXCEL_XLS.equalsIgnoreCase(getFileExt(path)), isNew, FileUtils.openInputStream(file));
+        Sheet sheet = workBook.getSheetAt(0);
+        
+        // 写入title
+        Row row;
+        row = sheet.createRow(sheet.getLastRowNum());
+        for (int i = 0; i < title.length; i++) {
+            row.createCell(i).setCellValue(title[i]);
         }
-    }
-    
-    private static void write(String[] title, List<Map<String, Object>> list, OutputStream out, boolean isXls, boolean isNew, InputStream inputStream)
-            throws IOException {
-        Workbook wb = null;
-        try {
-            if (isNew) {
-                if (isXls) {  //Excel 2003
-                    wb = new HSSFWorkbook();
-                } else {  // Excel 2007/2010
-                    wb = new XSSFWorkbook();
-                }
-            } else {
-                if (isXls) {  //Excel 2003
-                    wb = new HSSFWorkbook(inputStream);
-                } else {  // Excel 2007/2010
-                    wb = new XSSFWorkbook(inputStream);
-                }
-            }
-            write(title, list, wb, isNew);
-            // 创建文件输出流，准备输出电子表格：这个必须有，否则你在sheet上做的任何操作都不会有效
-            wb.write(out);
-        } finally {
-            if (wb != null) {
-                wb.close();
+        
+        Map<String, Object> map;
+        int lastRowNum = sheet.getLastRowNum();
+        for (Map<String, Object> aList : list) {
+            row = sheet.createRow(++lastRowNum);
+            map = aList;
+            for (int j = 0; j < title.length; j++) {
+                row.createCell(j).setCellValue(map.get(title[j]).toString());
             }
         }
+        return workBook;
     }
 }
