@@ -5,25 +5,33 @@ import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
 /**
- * redis工具类
+ * redis 单机 工具类
  * Created by 陈东一
  * 2018/5/20 15:16
  */
-public class JedisSingleUtil implements JedisUtil{
+public class JedisSingleUtil implements JedisUtil {
     
     private JedisPool jPool;
     private JedisPoolConfig config;
-    private String host;
-    private int port;
+    private final String host;
+    private final int port;
+    private final int expireTime;             //默认失效时间
     
-    public JedisSingleUtil() {}
+    public JedisSingleUtil() {
+        this(60 * 60, "127.0.0.1", 6379);
+    }
     
     
     public JedisSingleUtil(int time, String host, int port) {
-        int time1 = time;
+        this.expireTime = time;
         this.host = host;
         this.port = port;
     }
+    
+    public JedisSingleUtil(String host, int port) {
+        this(60 * 60, host, port);
+    }
+    
     
     @Override
     public void init() {
@@ -31,9 +39,8 @@ public class JedisSingleUtil implements JedisUtil{
     }
     
     
-    
     public static void main(String[] args) {
-        JedisSingleUtil jedisUtil = new JedisSingleUtil(60 * 60, "192.168.2.101", 6001);
+        JedisSingleUtil jedisUtil = new JedisSingleUtil("192.168.2.101", 6001);
         jedisUtil.init();
         String name = jedisUtil.get("name");
         System.out.println(name);
@@ -41,24 +48,26 @@ public class JedisSingleUtil implements JedisUtil{
     
     /**
      * 添加，失效时间60*60
-     * @param key String
+     *
+     * @param key   String
      * @param value String
      * @return String
      */
     @Override
-    public String set(String key, String value){
-        return set(key, value);
+    public String set(String key, String value) {
+        return set(key, value, expireTime);
     }
     
     /**
      * 添加
-     * @param key String
+     *
+     * @param key   String
      * @param value String
-     * @param time int
+     * @param time  int
      * @return String
      */
     @Override
-    public String set(String key, String value, int time){
+    public String set(String key, String value, int time) {
         try (Jedis jedis = jPool.getResource()) {
             String result = jedis.set(key, value);
             jedis.expire(key, time);
@@ -68,6 +77,7 @@ public class JedisSingleUtil implements JedisUtil{
     
     /**
      * 获取
+     *
      * @param key String
      * @return String
      */
@@ -80,10 +90,11 @@ public class JedisSingleUtil implements JedisUtil{
     
     /**
      * 删除
+     *
      * @param key String
      */
     @Override
-    public void delete(String ...key) {
+    public void delete(String... key) {
         try (Jedis jedis = jPool.getResource()) {
             jedis.del(key);
         }
@@ -91,14 +102,15 @@ public class JedisSingleUtil implements JedisUtil{
     
     /**
      * 设置失效时间
-     * @param key String
+     *
+     * @param key  String
      * @param time int
      */
     @Override
-    public void expire(String key, int time){
+    public void expire(String key, int time) {
         try (Jedis jedis = jPool.getResource()) {
             jedis.del(key);
         }
     }
-
+    
 }

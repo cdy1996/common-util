@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * redis工具类
+ * redis 主从 工具类
  * Created by 陈东一
  * 2018/5/20 15:16
  */
@@ -17,16 +17,16 @@ public class JedisSentinelUtil implements JedisUtil {
     
     private JedisSentinelPool jedisPool;
     private JedisPoolConfig config;
-    private Set<String> sentinels = new HashSet<>();
-    private String masterName;
-    private String password;
+    private final Set<String> sentinels;
+    private final String masterName;
+    private final String password;
     
     public JedisSentinelUtil() {
+        this(new HashSet<>(), null, null);
     }
     
     public JedisSentinelUtil(String masterName, String password) {
-        this.masterName = masterName;
-        this.password = password;
+        this(new HashSet<>(), masterName, password);
     }
     
     public JedisSentinelUtil(Set<String> sentinels, String masterName, String password) {
@@ -73,7 +73,7 @@ public class JedisSentinelUtil implements JedisUtil {
     }
     
     @Override
-    public void delete(String ...key) {
+    public void delete(String... key) {
         try (Jedis jedis = jedisPool.getResource()) {
             jedis.del(key);
         }
@@ -85,7 +85,7 @@ public class JedisSentinelUtil implements JedisUtil {
             jedis.expire(key, time);
         }
     }
-
+    
     
     @Override
     public String set(String key, String value) {
