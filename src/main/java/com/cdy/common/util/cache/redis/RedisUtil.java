@@ -7,6 +7,6 @@ import com.cdy.common.util.cache.CacheUtil;
  * Created by 陈东一
  * 2018/5/20 15:16
  */
-public interface JedisUtil extends CacheUtil {
+public interface RedisUtil extends CacheUtil {
     void init();
 }

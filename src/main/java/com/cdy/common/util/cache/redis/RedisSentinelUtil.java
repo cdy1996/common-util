@@ -13,7 +13,7 @@ import java.util.Set;
  * Created by 陈东一
  * 2018/5/20 15:16
  */
-public class JedisSentinelUtil implements JedisUtil {
+public class RedisSentinelUtil implements RedisUtil {
     
     private JedisSentinelPool jedisPool;
     private JedisPoolConfig config;
@@ -21,15 +21,15 @@ public class JedisSentinelUtil implements JedisUtil {
     private final String masterName;
     private final String password;
     
-    public JedisSentinelUtil() {
+    public RedisSentinelUtil() {
         this(new HashSet<>(), null, null);
     }
     
-    public JedisSentinelUtil(String masterName, String password) {
+    public RedisSentinelUtil(String masterName, String password) {
         this(new HashSet<>(), masterName, password);
     }
     
-    public JedisSentinelUtil(Set<String> sentinels, String masterName, String password) {
+    public RedisSentinelUtil(Set<String> sentinels, String masterName, String password) {
         this.sentinels = sentinels;
         this.masterName = masterName;
         this.password = password;
@@ -54,11 +54,11 @@ public class JedisSentinelUtil implements JedisUtil {
     
     
     public static void main(String[] args) {
-        JedisSentinelUtil jedisUtil = new JedisSentinelUtil();
-        jedisUtil.addSentinels("192.168.2.101", "26379");
-        jedisUtil.addSentinels("192.168.2.101", "26479");
-        jedisUtil.init();
-        String name = jedisUtil.get("name");
+        RedisSentinelUtil redisUtil = new RedisSentinelUtil();
+        redisUtil.addSentinels("192.168.2.101", "26379");
+        redisUtil.addSentinels("192.168.2.101", "26479");
+        redisUtil.init();
+        String name = redisUtil.get("name");
         System.out.println(name);
     }
     

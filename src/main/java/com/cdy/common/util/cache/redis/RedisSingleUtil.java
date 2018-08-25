@@ -9,7 +9,7 @@ import redis.clients.jedis.JedisPoolConfig;
  * Created by 陈东一
  * 2018/5/20 15:16
  */
-public class JedisSingleUtil implements JedisUtil {
+public class RedisSingleUtil implements RedisUtil {
     
     private JedisPool jPool;
     private JedisPoolConfig config;
@@ -17,18 +17,18 @@ public class JedisSingleUtil implements JedisUtil {
     private final int port;
     private final int expireTime;             //默认失效时间
     
-    public JedisSingleUtil() {
+    public RedisSingleUtil() {
         this(60 * 60, "127.0.0.1", 6379);
     }
     
     
-    public JedisSingleUtil(int time, String host, int port) {
+    public RedisSingleUtil(int time, String host, int port) {
         this.expireTime = time;
         this.host = host;
         this.port = port;
     }
     
-    public JedisSingleUtil(String host, int port) {
+    public RedisSingleUtil(String host, int port) {
         this(60 * 60, host, port);
     }
     
@@ -40,9 +40,9 @@ public class JedisSingleUtil implements JedisUtil {
     
     
     public static void main(String[] args) {
-        JedisSingleUtil jedisUtil = new JedisSingleUtil("192.168.2.101", 6001);
-        jedisUtil.init();
-        String name = jedisUtil.get("name");
+        RedisSingleUtil redisUtil = new RedisSingleUtil("192.168.2.101", 6001);
+        redisUtil.init();
+        String name = redisUtil.get("name");
         System.out.println(name);
     }
     
