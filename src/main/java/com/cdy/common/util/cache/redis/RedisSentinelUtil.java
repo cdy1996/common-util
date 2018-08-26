@@ -86,6 +86,13 @@ public class RedisSentinelUtil implements RedisUtil {
         }
     }
     
+    @Override
+    public boolean exist(String key) {
+        try (Jedis jedis = jedisPool.getResource()) {
+            return jedis.exists(key);
+        }
+    }
+    
     
     @Override
     public String set(String key, String value) {

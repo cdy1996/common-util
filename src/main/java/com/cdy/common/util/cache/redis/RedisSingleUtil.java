@@ -113,4 +113,11 @@ public class RedisSingleUtil implements RedisUtil {
         }
     }
     
+    @Override
+    public boolean exist(String key) {
+        try (Jedis jedis = jPool.getResource()) {
+            return jedis.exists(key);
+        }
+    }
+    
 }

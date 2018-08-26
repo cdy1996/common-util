@@ -46,4 +46,11 @@ public interface CacheUtil {
      * @param time
      */
     void expire(String key, int time);
+    
+    /**
+     * 判断key的值是否存在
+     * @param key
+     * @return
+     */
+    boolean exist(String key);
 }
