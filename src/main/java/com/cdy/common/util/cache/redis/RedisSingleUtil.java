@@ -120,4 +120,9 @@ public class RedisSingleUtil implements RedisUtil {
         }
     }
     
+    
+    @Override
+    public Jedis getJedis() {
+        return jPool.getResource();
+    }
 }

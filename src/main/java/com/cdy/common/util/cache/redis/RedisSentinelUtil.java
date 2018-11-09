@@ -211,4 +211,9 @@ public class RedisSentinelUtil implements RedisUtil {
         return len;
     }
     
+    
+    @Override
+    public Jedis getJedis() {
+        return jedisPool.getResource();
+    }
 }

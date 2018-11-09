@@ -1,6 +1,7 @@
 package com.cdy.common.util.cache.redis;
 
 import com.cdy.common.util.cache.CacheUtil;
+import redis.clients.jedis.Jedis;
 
 /**
  * redis 工具类接口
@@ -9,4 +10,6 @@ import com.cdy.common.util.cache.CacheUtil;
  */
 public interface RedisUtil extends CacheUtil {
     void init();
+    
+    Jedis getJedis();
 }
