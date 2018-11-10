@@ -130,12 +130,12 @@ public class RedisSingleUtil implements RedisUtil {
     
     
     @Override
-    public List<String> blpop(String... key) {
+    public String blpop(int time, String... key) {
         List<String> blpop = null;
         try (Jedis jedis = jPool.getResource()) {
-            blpop = jedis.blpop(key);
+            blpop = jedis.blpop(time, key);
         }
-        return blpop;
+        return blpop.get(1);
     }
     
     @Override
