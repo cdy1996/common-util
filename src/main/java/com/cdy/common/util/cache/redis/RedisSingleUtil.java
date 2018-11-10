@@ -4,6 +4,8 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
+import java.util.List;
+
 /**
  * redis 单机 工具类
  * Created by 陈东一
@@ -124,5 +126,22 @@ public class RedisSingleUtil implements RedisUtil {
     @Override
     public Jedis getJedis() {
         return jPool.getResource();
+    }
+    
+    
+    @Override
+    public List<String> blpop(String... key) {
+        List<String> blpop = null;
+        try (Jedis jedis = jPool.getResource()) {
+            blpop = jedis.blpop(key);
+        }
+        return blpop;
+    }
+    
+    @Override
+    public void rpush(String key, String... value) {
+        try (Jedis jedis = jPool.getResource()) {
+            jedis.rpush(key, value);
+        }
     }
 }

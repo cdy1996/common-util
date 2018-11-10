@@ -216,4 +216,21 @@ public class RedisSentinelUtil implements RedisUtil {
     public Jedis getJedis() {
         return jedisPool.getResource();
     }
+    
+    @Override
+    public List<String> blpop(String... key) {
+        List<String> blpop = null;
+        try (Jedis jedis = jedisPool.getResource()) {
+            blpop = jedis.blpop(key);
+        }
+        return blpop;
+    }
+    
+    @Override
+    public void rpush(String key, String... value) {
+        try (Jedis jedis = jedisPool.getResource()) {
+            jedis.rpush(key, value);
+        }
+    }
+    
 }
