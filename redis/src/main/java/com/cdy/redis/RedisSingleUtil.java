@@ -5,6 +5,7 @@ import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * redis 单机 工具类
@@ -39,14 +40,7 @@ public class RedisSingleUtil implements RedisUtil {
     public void init() {
         jPool = new JedisPool(host, port);
     }
-    
-    
-    public static void main(String[] args) {
-        RedisSingleUtil redisUtil = new RedisSingleUtil("192.168.2.101", 6001);
-        redisUtil.init();
-        String name = redisUtil.get("name");
-        System.out.println(name);
-    }
+
     
     /**
      * 添加，失效时间60*60
@@ -119,6 +113,15 @@ public class RedisSingleUtil implements RedisUtil {
     public boolean exist(String key) {
         try (Jedis jedis = jPool.getResource()) {
             return jedis.exists(key);
+        }
+    }
+    
+    @Override
+    public int size(String prefix) {
+        try(Jedis jedis = jPool.getResource()){
+            //todo 优化scan
+            Set<String> keys = jedis.keys(prefix + "*");
+            return keys.size();
         }
     }
     

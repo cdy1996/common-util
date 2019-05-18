@@ -53,15 +53,6 @@ public class RedisSentinelUtil implements RedisUtil {
     }
     
     
-    public static void main(String[] args) {
-        RedisSentinelUtil redisUtil = new RedisSentinelUtil();
-        redisUtil.addSentinels("192.168.2.101", "26379");
-        redisUtil.addSentinels("192.168.2.101", "26479");
-        redisUtil.init();
-        String name = redisUtil.get("name");
-        System.out.println(name);
-    }
-    
     
     @Override
     public String get(String key) {
@@ -92,6 +83,16 @@ public class RedisSentinelUtil implements RedisUtil {
             return jedis.exists(key);
         }
     }
+    
+    @Override
+    public int size(String prefix) {
+        try(Jedis jedis = jedisPool.getResource()){
+            //todo 优化scan
+            Set<String> keys = jedis.keys(prefix + "*");
+            return keys.size();
+        }
+    }
+    
     
     
     @Override

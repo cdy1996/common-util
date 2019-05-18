@@ -53,4 +53,11 @@ public interface CacheUtil {
      * @return
      */
     boolean exist(String key);
+    
+    /**
+     * 根据前缀查询缓存数量
+     * @param prefix
+     * @return
+     */
+    int size(String prefix);
 }
