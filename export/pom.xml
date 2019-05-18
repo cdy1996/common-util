@@ -9,9 +9,8 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.cdy</groupId>
+
     <artifactId>export</artifactId>
-    <version>1.0-SNAPSHOT</version>
     <name>export</name>
 
     <properties>
@@ -21,7 +20,7 @@
         <dependency>
             <groupId>com.cdy</groupId>
             <artifactId>common</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 

@@ -23,6 +23,7 @@
     <name>common-util</name>
 
     <properties>
+        <project.version>2.0-SNAPSHOT</project.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -33,11 +34,11 @@
         <commons.net.version>3.3</commons.net.version>
         <commons.beanutils.version>1.9.3</commons.beanutils.version>
         <commons.collections.version>3.2.2</commons.collections.version>
-        <commons.fileupload.version>1.3.2</commons.fileupload.version>
+        <commons.fileupload.version>1.3.3</commons.fileupload.version>
         <commons.io.version>2.2</commons.io.version>
         <junit.version>4.12</junit.version>
         <fastjson.version>1.2.47</fastjson.version>
-        <jackson.version>2.9.4</jackson.version>
+        <jackson.version>2.9.8</jackson.version>
         <httpclient.version>4.5.2</httpclient.version>
         <jedis.version>2.9.0</jedis.version>
         <servlet.version>3.1.0</servlet.version>

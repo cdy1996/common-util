@@ -11,9 +11,8 @@
         <version>2.0-SNAPSHOT</version>
     </parent>
 
-    <groupId>com.cdy</groupId>
-    <artifactId>cache</artifactId>
-    <version>1.0-SNAPSHOT</version>
+
+    <artifactId>common-cache</artifactId>
 
     <properties>
     </properties>
