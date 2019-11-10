@@ -25,9 +25,6 @@ public class RedisSentinelUtil implements RedisUtil {
         this(new HashSet<>(), null, null);
     }
     
-    public RedisSentinelUtil(String masterName, String password) {
-        this(new HashSet<>(), masterName, password);
-    }
     
     public RedisSentinelUtil(Set<String> sentinels, String masterName, String password) {
         this.sentinels.addAll(sentinels);
@@ -53,8 +50,11 @@ public class RedisSentinelUtil implements RedisUtil {
 //        jedisPoolConfig.setMaxWaitMillis(2000); // 设置2秒
         //对拿到的connection进行validateObject校验
 //        jedisPoolConfig.setTestOnBorrow(true);
-        
-        jedisPool = new JedisSentinelPool(masterName, sentinels, config, password);
+        if (password == null || password.equals("")) {
+            jedisPool = new JedisSentinelPool(masterName, sentinels, config);
+        } else {
+            jedisPool = new JedisSentinelPool(masterName, sentinels, config, password);
+        }
     }
     
     

@@ -55,7 +55,12 @@ public class RedisClusterUtil implements RedisUtil {
         for (int i = 0; i < hosts.length; i++) {
             hostAndPortsSet.add(new HostAndPort(hosts[i], ports[i]));
         }
-        jedis = new JedisCluster(hostAndPortsSet, 3000, 3000, 3, password, jedisPoolConfig);
+        if (password == null || password.equals("")) {
+            jedis = new JedisCluster(hostAndPortsSet, 3000, 3000, 3, jedisPoolConfig);
+        } else {
+            jedis = new JedisCluster(hostAndPortsSet, 3000, 3000, 3, password, jedisPoolConfig);
+    
+        }
         
     }
     
