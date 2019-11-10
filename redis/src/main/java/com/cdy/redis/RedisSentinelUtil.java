@@ -17,7 +17,7 @@ public class RedisSentinelUtil implements RedisUtil {
     
     private JedisSentinelPool jedisPool;
     private JedisPoolConfig config;
-    private final Set<String> sentinels;
+    private final Set<String> sentinels = new HashSet<>();
     private final String masterName;
     private final String password;
     
@@ -30,7 +30,7 @@ public class RedisSentinelUtil implements RedisUtil {
     }
     
     public RedisSentinelUtil(Set<String> sentinels, String masterName, String password) {
-        this.sentinels = sentinels;
+        this.sentinels.addAll(sentinels);
         this.masterName = masterName;
         this.password = password;
     }
@@ -42,16 +42,20 @@ public class RedisSentinelUtil implements RedisUtil {
     
     @Override
     public void init() {
-//        config = new JedisPoolConfig();
-//        config.setMaxTotal(redis_max_total);
-//        config.setMaxIdle(redis_max_idle);
-//        config.setMaxWaitMillis(time);
-        // 在borrow一个jedis实例时，是否提前进行validate操作；如果为true，则得到的jedis实例均是可用的
-//        config.setTestOnBorrow(true);
+        config = new JedisPoolConfig();
+        // 最大空闲连接数, 默认8个
+        config.setMaxIdle(8);
+        // 最大连接数, 默认8个
+        config.setMaxTotal(8);
+        //最小空闲连接数, 默认0
+        config.setMinIdle(0);
+        // 获取连接时的最大等待毫秒数(如果设置为阻塞时BlockWhenExhausted),如果超时就抛异常, 小于零:阻塞不确定的时间,  默认-1
+//        jedisPoolConfig.setMaxWaitMillis(2000); // 设置2秒
+        //对拿到的connection进行validateObject校验
+//        jedisPoolConfig.setTestOnBorrow(true);
         
         jedisPool = new JedisSentinelPool(masterName, sentinels, config, password);
     }
-    
     
     
     @Override
@@ -86,7 +90,7 @@ public class RedisSentinelUtil implements RedisUtil {
     
     @Override
     public int size(String prefix) {
-        try(Jedis jedis = jedisPool.getResource()){
+        try (Jedis jedis = jedisPool.getResource()) {
             //todo 优化scan
             Set<String> keys = jedis.keys(prefix + "*");
             return keys.size();
@@ -94,10 +98,12 @@ public class RedisSentinelUtil implements RedisUtil {
     }
     
     
-    
     @Override
     public String set(String key, String value) {
-        return set(key, value);
+        try (Jedis jedis = jedisPool.getResource()) {
+            String set = jedis.set(key, value);
+            return set;
+        }
     }
     
     @Override

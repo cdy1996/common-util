@@ -20,24 +20,20 @@ public class RedisClusterUtil implements RedisUtil {
     private JedisPoolConfig jedisPoolConfig;
     private final String[] hosts;
     private final int[] ports;
-    private final int expireTime;             //默认失效时间
-    
-    public RedisClusterUtil() {
-        this(60 * 60, new String[]{"127.0.0.1"}, new int[]{6379});
-    }
-    
-    public RedisClusterUtil(int time, String[] hosts, int[] ports) {
-        this.expireTime = time;
-        this.hosts = hosts;
-        this.ports = ports;
-    }
+    private final String password;
     
     
     public RedisClusterUtil(String[] hosts, int[] ports) {
-        this.expireTime = 60 * 60;
+        this(hosts, ports, null);
+    }
+    
+    
+    public RedisClusterUtil(String[] hosts, int[] ports, String password) {
         this.hosts = hosts;
         this.ports = ports;
+        this.password = password;
     }
+    
     
     @Override
     public void init() {
@@ -59,7 +55,8 @@ public class RedisClusterUtil implements RedisUtil {
         for (int i = 0; i < hosts.length; i++) {
             hostAndPortsSet.add(new HostAndPort(hosts[i], ports[i]));
         }
-        jedis = new JedisCluster(hostAndPortsSet, jedisPoolConfig);
+        jedis = new JedisCluster(hostAndPortsSet, 3000, 3000, 3, password, jedisPoolConfig);
+        
     }
     
     
@@ -72,7 +69,8 @@ public class RedisClusterUtil implements RedisUtil {
      */
     @Override
     public String set(String key, String value) {
-        return set(key, value, expireTime);
+        String result = jedis.set(key, value);
+        return result;
     }
     
     /**
@@ -85,8 +83,7 @@ public class RedisClusterUtil implements RedisUtil {
      */
     @Override
     public String set(String key, String value, int time) {
-        String result = jedis.set(key, value);
-        jedis.expire(key, time);
+        String result = jedis.setex(key, time, value);
         return result;
     }
     

@@ -17,24 +17,17 @@ public class RedisSingleUtil implements RedisUtil {
     private JedisPool jPool;
     private JedisPoolConfig config;
     private final String host;
-    private final int port;
-    private final int expireTime;             //默认失效时间
+    private final Integer port;
     
     public RedisSingleUtil() {
-        this(60 * 60, "127.0.0.1", 6379);
+        this("127.0.0.1", 6379);
     }
     
     
-    public RedisSingleUtil(int time, String host, int port) {
-        this.expireTime = time;
+    public RedisSingleUtil(String host, Integer port) {
         this.host = host;
         this.port = port;
     }
-    
-    public RedisSingleUtil(String host, int port) {
-        this(60 * 60, host, port);
-    }
-    
     
     @Override
     public void init() {
@@ -51,7 +44,10 @@ public class RedisSingleUtil implements RedisUtil {
      */
     @Override
     public String set(String key, String value) {
-        return set(key, value, expireTime);
+        try (Jedis jedis = jPool.getResource()) {
+            String result = jedis.set(key, value);
+            return result;
+        }
     }
     
     /**
@@ -65,8 +61,7 @@ public class RedisSingleUtil implements RedisUtil {
     @Override
     public String set(String key, String value, int time) {
         try (Jedis jedis = jPool.getResource()) {
-            String result = jedis.set(key, value);
-            jedis.expire(key, time);
+            String result =  jedis.setex(key, time, value);
             return result;
         }
     }
